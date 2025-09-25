@@ -1,0 +1,42 @@
+{
+    "name": "few-far/statamic-sitekit",
+    "description": "We use Statamic, but we always bolt on these extra batteries + conventions so projects start at our baseline.",
+    "type": "library",
+    "version": "1.0.0-alpha-1",
+    "require-dev": {
+        "laravel/framework": "^12.30",
+        "pestphp/pest": "^4.1",
+        "larastan/larastan": "^3.7",
+        "statamic/cms": "^5.65",
+        "statamic/eloquent-driver": "^4.31",
+        "orchestra/testbench": "^10.6"
+    },
+    "license": "MIT",
+    "autoload": {
+        "files": [
+            "src/Support/helpers.php"
+        ],
+        "psr-4": {
+            "FewFar\\Sitekit\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Thomas Nadin",
+            "email": "nadinengland@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "FewFar\\Sitekit\\SitekitServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "pixelfear/composer-dist-plugin": true
+        }
+    }
+}

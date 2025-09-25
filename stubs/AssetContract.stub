@@ -1,0 +1,8 @@
+<?php
+
+namespace Statamic\Contracts\Assets;
+
+/**
+ * @mixin \Statamic\Assets\Asset
+ */
+interface Asset {}

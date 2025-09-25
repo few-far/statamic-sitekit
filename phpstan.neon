@@ -1,0 +1,19 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/nesbot/carbon/extension.neon
+
+parameters:
+    paths:
+        - src/
+    level: 1
+    stubFiles:
+        - stubs/AssetContract.stub
+        - stubs/EntryContract.stub
+        - stubs/TermContract.stub
+
+#    ignoreErrors:
+#        - '#PHPDoc tag @var#'
+#
+    excludePaths:
+        # - */*/FileToBeExcluded.php
+        - src/MonkeyPatch/Entries.php

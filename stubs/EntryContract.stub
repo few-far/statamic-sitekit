@@ -1,0 +1,10 @@
+<?php
+
+namespace Statamic\Contracts\Entries;
+
+use Illuminate\Contracts\Support\Responsable;
+
+/**
+ * @mixin \Statamic\Entries\Entry
+ */
+interface Entry extends Responsable {}
