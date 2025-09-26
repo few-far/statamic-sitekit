@@ -26,6 +26,11 @@ class CollectionSeeder extends Seeder
     protected ?CollectionTree $tree = null;
 
     /**
+     * Override to change where seeders are automatically located.
+     */
+    protected $seederNamespace = 'Database\Seeders\Content\Collections';
+
+    /**
      * Run the seeder.
      */
     public function run()
@@ -88,7 +93,7 @@ class CollectionSeeder extends Seeder
         }
 
         $class = implode('\\', [
-            'FewFar\Sitekit\Seeders\Content\Collections',
+            $this->seederNamespace,
             str($this->collection->handle())->studly(),
             str($entry->slug())->studly() . 'Seeder',
         ]);
