@@ -15,8 +15,8 @@ class MonkeyPatchServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(\Statamic\Sites\Sites::class, Sites::class);
-        // $this->app->bind(\Statamic\Fieldtypes\Entries::class, Entries::class);
+        // No need to use this method as cannot guarentee order of executions between this and
+        // Statamic and the Statamic Eloquent Driver.
     }
 
     /**
@@ -26,6 +26,9 @@ class MonkeyPatchServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->bind(\Statamic\Sites\Sites::class, Sites::class);
+        // $this->app->bind(\Statamic\Fieldtypes\Entries::class, Entries::class);
+
         $this->removeStaticCachingIfNecessary();
     }
 
