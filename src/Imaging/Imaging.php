@@ -45,7 +45,7 @@ class Imaging
 
     public function config(Asset $asset)
     {
-        $max = min(3000, ...$asset->dimensions());
+        $max = min(3000, max($asset->dimensions()));
 
         return [
             'width' => $max,
