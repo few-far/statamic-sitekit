@@ -3,13 +3,14 @@
 namespace FewFar\Sitekit\Imaging\Jobs;
 
 use FewFar\Sitekit\Imaging\Imaging;
-use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
 use Statamic\Assets\Asset;
 use Statamic\Facades;
 
-class GenerateImages
+class GenerateImages implements ShouldQueue
 {
-    use Dispatchable;
+    use Queueable;
 
     public string $asset;
 
@@ -23,7 +24,7 @@ class GenerateImages
         $asset = Facades\Asset::find($this->asset);
 
         if (! $asset) {
-            report('GenerateAssetCrop scheduled to make a crop, but unable to find asset: ' . $this->asset);
+            report('GenerateAsset scheduled to make a crop, but unable to find asset: ' . $this->asset);
 
             return;
         }
@@ -32,6 +33,13 @@ class GenerateImages
             return;
         }
 
+        $this->removeMemoryLimit();
+
         $imaging->generate($asset);
+    }
+
+    protected function removeMemoryLimit()
+    {
+        ini_set('memory_limit', -1);
     }
 }
