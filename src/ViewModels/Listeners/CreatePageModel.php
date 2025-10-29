@@ -11,6 +11,15 @@ use Statamic\Structures\Page;
 
 class CreatePageModel
 {
+    protected bool $ignoreRouteMappers = false;
+
+    public function ignoreRouteMappers(bool $ignore)
+    {
+        $this->ignoreRouteMappers = true;
+
+        return $this;
+    }
+
     /**
      * When the Statamic route finds a resource (entry, term, etc) we attempt
      * to build the page model, if appliable, and load it into the container.
@@ -124,8 +133,10 @@ class CreatePageModel
 
         $mappers = $this->mappers();
 
-        if ($route = $mappers['@routes'][request()->route()->getName()] ?? null) {
-            return $route;
+        if (! $this->ignoreRouteMappers) {
+            if ($route = $mappers['@routes'][request()->route()->getName()] ?? null) {
+                return $route;
+            }
         }
 
         if ($type = $mappers[$collection][$blueprint] ?? null) {

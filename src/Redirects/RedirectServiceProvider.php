@@ -24,8 +24,8 @@ class RedirectServiceProvider extends ServiceProvider
 
     protected function configureNotFoundHandler()
     {
-        Facades\Exceptions::renderable(function (NotFoundHttpException $ex, Request $request) {
-            return app(HandlesNotFoundExceptions::class)->handle($ex, $request);
+        NotFoundHttpException::renderUsing(function () {
+            return app(HandlesNotFoundExceptions::class)->handle($this);
         });
     }
 
