@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('source', 2048);
             $table->text('target');
             $table->smallInteger('code');
-            $table->text('description')->nullable();
+            $table->jsonb('description')->nullable();
 
             $table->index(['source_type', 'source']);
         });
@@ -30,9 +30,10 @@ return new class extends Migration
         Schema::create('cms_redirect_logs', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('url', 2048);
-            $table->string('path', 2048);
+            $table->text('url');
+            $table->text('path');
             $table->foreignId('redirect_id')->nullable();
+            $table->text('redirect')->nullable();
         });
     }
 

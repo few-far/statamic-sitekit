@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Pipeline;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Lottery;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Exceptions\NotFoundHttpException;
 use Statamic\Facades\GlobalSet;
@@ -48,16 +49,10 @@ class HandlesNotFoundExceptions
 
     protected function attemptCmsableRedirect(NotFoundHttpException $ex, Closure $next)
     {
-        $should_attempt = Schema::hasTable('cms_redirects') && Schema::hasTable('cms_redirects_logs');
-
-        if (! $should_attempt) {
-            return $next($ex);
-        }
-
         $path = ('/' . trim($this->request->getPathInfo(), '/'));
         $redirect = $this->findRedirect($path);
 
-        DB::table('cms_redirects_logs')->insert([
+        DB::table('cms_redirect_logs')->insert([
             'created_at' => DB::raw('NOW()'),
             'updated_at' => DB::raw('NOW()'),
             'url' => $this->request->url(),
@@ -66,9 +61,19 @@ class HandlesNotFoundExceptions
             'redirect_id' => $redirect?->id,
         ]);
 
+        Lottery::odds(1, 100)
+            ->winner(function () {
+                DB::table('cms_redirect_logs')
+                    ->where('created_at', '<', DB::raw('NOW() - interval \'1 year\''))
+                    ->delete();
+            })
+            ->choose();
+
         if ($redirect) {
             return response()->redirectTo($redirect->target, $redirect->code);
         }
+
+
 
         return $next($ex);
     }
