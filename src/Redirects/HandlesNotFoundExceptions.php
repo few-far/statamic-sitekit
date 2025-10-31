@@ -85,7 +85,7 @@ class HandlesNotFoundExceptions
             ->where(function ($query) use ($path) {
                 $query->orWhere(function ($query) use ($path) {
                     $query->where('source_type', 'equals');
-                    $query->where('source', [ $path ]);
+                    $query->whereRaw('LOWER(source) = LOWER(?)', [ $path ]);
                 });
 
                 $query->orWhere(function ($query) use ($path) {

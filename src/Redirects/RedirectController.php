@@ -14,12 +14,22 @@ class RedirectController extends Controller
         return view()->file(__DIR__.'/resources/views/redirects-index.blade.php', [
             'redirect' => [
                 'create_url' => cp_route('redirects.create'),
+                'groups' => Redirect::query()
+                    ->select('group')
+                    ->distinct()
+                    ->pluck('group')
+                    ->map(function ($group) {
+                        return [
+                            'label' => $group ?? '(No group)',
+                            'value' => cp_route('redirects', [ 'group' => $group ]),
+                        ];
+                    }),
                 'columns' => [
                     Column::make('source'),
+                    Column::make('source_type')->label('Type'),
                     Column::make('target'),
                     Column::make('code'),
                     Column::make('created_at')->label('Created'),
-                    Column::make('source_type')->label('Type')->visible(false),
                     Column::make('updated_at')->label('Updated')->visible(false),
                 ],
                 'items' => Redirect::query()
@@ -46,6 +56,7 @@ class RedirectController extends Controller
                 'type' => 'button_group',
                 'options' => [
                     'equals' => 'Equals',
+                    'like' => 'Like',
                     'regex' => 'Regex',
                 ],
                 'instructions' => 'Allows for advanced redirects.',

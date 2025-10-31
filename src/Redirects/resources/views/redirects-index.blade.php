@@ -14,6 +14,15 @@
 				Create Redirect
 			</a>
 		</div>
+
+		@if ($redirect['groups'])
+			<div class="mt-3 mb-6 max-w-sm">
+				<select-input
+					:options="{{ Js::from($redirect['groups']) }}"
+					@input="window.location = $event"
+				/>
+			</div>
+		@endif
 	</header>
 
 	<redirect-listing
