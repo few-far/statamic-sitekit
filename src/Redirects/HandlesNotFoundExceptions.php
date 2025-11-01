@@ -55,7 +55,7 @@ class HandlesNotFoundExceptions
         DB::table('cms_redirect_logs')->insert([
             'created_at' => DB::raw('NOW()'),
             'updated_at' => DB::raw('NOW()'),
-            'url' => $this->request->url(),
+            'url' => $this->request->getRequestUri(),
             'path' => $path,
             'redirect' => $redirect?->target,
             'redirect_id' => $redirect?->id,
