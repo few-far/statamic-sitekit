@@ -1,7 +1,8 @@
 <?php
 
-namespace FewFar\Sitekit\Redirects;
+namespace FewFar\Sitekit\Redirects\CP;
 
+use FewFar\Sitekit\Redirects\Redirect;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Statamic\CP\Column;
@@ -52,8 +53,13 @@ class RedirectController extends Controller
     protected function blueprint()
     {
         return Blueprint::makeFromFields([
+            'enabled' => [
+                'type' => 'toggle',
+                'default' => false,
+                'width' => 75,
+            ],
             'source_type' => [
-                'type' => 'button_group',
+                'type' => 'select',
                 'options' => [
                     'equals' => 'Equals',
                     'like' => 'Like',
@@ -62,7 +68,7 @@ class RedirectController extends Controller
                 'instructions' => 'Allows for advanced redirects.',
                 'default' => 'equals',
                 'display' => 'Mode',
-                'width' => 25,
+                'width' => 33,
             ],
             'code' => [
                 'type' => 'select',
@@ -74,32 +80,27 @@ class RedirectController extends Controller
                 'placeholder' => 'Temporary (302)',
                 'default' => '302',
                 'display' => 'Code',
-                'width' => 25,
+                'width' => 33,
             ],
             'group' => [
                 'type' => 'text',
-                'instructions' => 'Keeps different redirects together in the CMS.',
+                'instructions' => 'Keeps different redirects together.',
                 'display' => 'Group',
-                'width' => 25,
-            ],
-            'enabled' => [
-                'type' => 'toggle',
-                'default' => false,
-                'width' => 25,
+                'width' => 33,
             ],
             'source' => [
                 'type' => 'text',
                 'display' => 'Source',
                 'validate' => 'required|max:2048',
                 'instructions' => 'The url or pattern to use for the redirect.',
-                'width' => 50,
+                'width' => 100,
             ],
             'target' => [
                 'type' => 'text',
                 'display' => 'Redirect to',
                 'validate' => 'required|max:2048',
                 'instructions' => 'Where to send the user once the url has been matched.',
-                'width' => 50,
+                'width' => 100,
             ],
         ]);
     }

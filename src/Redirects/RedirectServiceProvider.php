@@ -2,8 +2,7 @@
 
 namespace FewFar\Sitekit\Redirects;
 
-use FewFar\Sitekit\Redirects\HandlesNotFoundExceptions;
-use Illuminate\Http\Request;
+use FewFar\Sitekit\Redirects\CP\RedirectController;
 use Illuminate\Support\Facades;
 use Illuminate\Support\ServiceProvider;
 use Statamic\Exceptions\NotFoundHttpException;
