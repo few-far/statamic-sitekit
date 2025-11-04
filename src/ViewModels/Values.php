@@ -7,6 +7,7 @@ use Statamic\Assets\Asset;
 use Statamic\Contracts\Entries\Entry as EntryContract;
 use Statamic\Contracts\Taxonomies\Term as TermContract;
 use Statamic\Entries\Entry;
+use Statamic\Fields\LabeledValue;
 use Statamic\Fields\Values as BaseValues;
 use Statamic\Taxonomies\Term;
 
@@ -86,6 +87,22 @@ class Values extends BaseValues
     }
 
     /**
+     * Intended for single option fields, e.g.: select, button_group, radio etc.
+     */
+    public function option(string $key)
+    {
+        $value = $this->get($key);
+
+        if ($value instanceof LabeledValue) {
+            return $value->value();
+        }
+
+        return $value;
+    }
+
+    /**
+     * Intended for checkbox fields.
+     *
      * @return \FewFar\Sitekit\ViewModels\Values<string, bool|mixed>
      */
     public function options(string $key)
