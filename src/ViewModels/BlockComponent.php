@@ -25,9 +25,9 @@ abstract class BlockComponent extends Component implements Htmlable
         }
     }
 
-    public function setBlock(Values $block)
+    public function setBlock(Values|iterable $block)
     {
-        $this->block = $block;
+        $this->block = values($block);
 
         return $this;
     }
