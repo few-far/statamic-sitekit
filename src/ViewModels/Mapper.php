@@ -4,6 +4,7 @@ namespace FewFar\Sitekit\ViewModels;
 
 use FewFar\Sitekit\ViewModels\PageModel;
 use FewFar\Sitekit\ViewModels\Values;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Uri;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Facades;
@@ -173,7 +174,14 @@ abstract class Mapper
         ];
 
         return collect($blocks)
-            ->filter->isVisible()
+            ->whereInstanceOf(Htmlable::class)
+            ->filter(function ($block) {
+                if (! $block instanceof BlockComponent) {
+                    return true;
+                }
+
+                return $block->isVisible();
+            })
             ->values();
     }
 
@@ -189,7 +197,7 @@ abstract class Mapper
 
     /**
      * @param \Illuminate\Support\Collection<int, \FewFar\Sitekit\ViewModels\Values>  $fields
-     * @return \Illuminate\Support\Collection<int, \FewFar\Sitekit\ViewModels\BlockComponent>
+     * @return \Illuminate\Support\Collection<int, \FewFar\Sitekit\ViewModels\BlockComponent|Htmlable>
      */
     public function toComponentsFromFields($fields)
     {
