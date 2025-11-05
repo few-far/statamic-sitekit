@@ -9,6 +9,7 @@ use Illuminate\Routing\Events\PreparingResponse;
 use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\Facades;
 use Illuminate\Support\ServiceProvider;
+use Statamic\Statamic;
 
 class ViewModelsServiceProvider extends ServiceProvider
 {
@@ -28,6 +29,8 @@ class ViewModelsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Fieldtypes\Cta::register();
+
         Facades\View::composer('statamic::entries.create', PreparePublishFormFields::class);
 
         Facades\Event::listen(PreparingResponse::class, CreatePageModel::class);

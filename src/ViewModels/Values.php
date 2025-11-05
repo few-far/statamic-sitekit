@@ -120,23 +120,34 @@ class Values extends BaseValues
         );
     }
 
+    // public function cta(string $key)
+    // {
+    //     $value = $this->get($key);
+
+    //     if (! ($value['url'] ?? null)) {
+    //         return null;
+    //     }
+
+    //     return [
+    //         'link' => attrs([
+    //             'href' => $value['url'],
+    //             'target' => $value['open_in_new_tab'],
+    //             'download' => $value['asset']?->basename(),
+    //         ]),
+    //         'copy' => $value['label'] ?: $value['entry']?->get('title'),
+    //         'type' => strval($this->get($key . '_type')) ?: null,
+    //     ];
+    // }
+
+    /**
+     * Intended for use with Cta fields
+     */
     public function cta(string $key)
     {
-        $value = $this->get($key);
-
-        if (! ($value['url'] ?? null)) {
-            return null;
-        }
-
-        return [
-            'link' => attrs([
-                'href' => $value['url'],
-                'target' => $value['open_in_new_tab'],
-                'download' => $value['asset']?->basename(),
-            ]),
-            'copy' => $value['label'] ?: $value['entry']?->get('title'),
-            'type' => strval($this->get($key . '_type')) ?: null,
-        ];
+        return app(CtaModel::class)
+            ->setValues($this)
+            ->setKey($key)
+            ->model();
     }
 
     public function mapAsset(?Asset $asset)
