@@ -97,12 +97,13 @@ abstract class Mapper
     protected function makeNavItem(Page $page)
     {
         $current = request()->uri()->path();
+        $url = $page->augmentedValue('url')->value()?->url();
 
         $item = [
             'link' => attrs([
-                'href' => $page->url(),
-                'aria-current' => when(strval($page->url()), fn ($url) => (
-                    strval($current === ('/' . Uri::of($url)->path()))
+                'href' => $url,
+                'aria-current' => when($url, fn ($url) => (
+                    strval($current === Uri::of($url)->path())
                         ? 'page'
                         : null
                 )),
