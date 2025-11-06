@@ -132,6 +132,10 @@ abstract class Mapper
         return values($navs);
     }
 
+    /**
+     * @deprecated supported
+     * @see MetaModel
+     */
     public function makePageTitle()
     {
         if ($title = $this->model->values->get('page_meta_title')) {
@@ -141,6 +145,10 @@ abstract class Mapper
         return $this->model->values->get('title') . ' ' . $this->makePageTitleSuffix();
     }
 
+    /**
+     * @deprecated supported
+     * @see MetaModel
+     */
     public function makePageTitleSuffix()
     {
         if ($this->model->values->get('page_meta_title_no_suffix')) {
@@ -152,13 +160,13 @@ abstract class Mapper
 
     public function meta()
     {
-        return values([
-            'page_title' => trim($this->makePageTitle()),
-            'page_description' => $this->model->values->get('page_meta_description'),
-            'social_title' => $this->model->values->get('page_social_title'),
-            'social_description' => $this->model->values->get('page_social_description'),
-            'social_image' => $this->model->values->get('page_social_image')?->url(),
-        ]);
+        $model = app(MetaModel::class)->model();
+
+        if (method_exists($this, 'makePageTitle') || method_exists($this, 'makePageTitleSuffix')) {
+            $model->getProxiedInstance()->put('page_title', $this->makePageTitle());
+        }
+
+        return $model;
     }
 
     public function blocks()
