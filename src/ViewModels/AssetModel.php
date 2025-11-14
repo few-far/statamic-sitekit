@@ -2,6 +2,7 @@
 
 namespace FewFar\Sitekit\ViewModels;
 
+use FewFar\Sitekit\Exceptions\AppException;
 use FewFar\Sitekit\Imaging\Imaging;
 use Statamic\Assets\Asset;
 
@@ -23,11 +24,11 @@ class AssetModel
         }
 
         /** @var \Statamic\Assets\Asset|null */
-        $mobile_asset = $this->asset->get('mobile_asset');
+        $mobile_asset = $this->asset->augmentedValue('mobile_asset')->value();
         $dimensions = $this->asset->dimensions();
 
         return match (true) {
-            $this->asset->isVideo() => throw new \Exception('Not yet supported'),
+            $this->asset->isVideo() => AppException::unexpected('Videos not yet supported'),
             $this->asset->isSvg(), $this->asset->isImage() => [
                 'image' => [
                     ...($this->mapAssetSrc($this->asset) ?? [
