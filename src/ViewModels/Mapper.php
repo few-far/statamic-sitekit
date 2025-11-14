@@ -12,6 +12,8 @@ use Statamic\Structures\Page;
 
 abstract class Mapper
 {
+    use Concerns\MakesMeta;
+
     public Entry $entry;
     public PageModel $model;
 
@@ -123,7 +125,7 @@ abstract class Mapper
     public function navs()
     {
         $navs = Facades\Nav::all()
-            ->keyBy->handle
+            ->keyBy->handle()
             ->map(fn($nav) => $nav->in(Facades\Site::current()))
             ->map(fn($tree) => $tree->pages()->all())
             ->map->map(function ($page) {
@@ -131,43 +133,6 @@ abstract class Mapper
             });
 
         return values($navs);
-    }
-
-    /**
-     * @deprecated supported
-     * @see MetaModel
-     */
-    public function makePageTitle()
-    {
-        if ($title = $this->model->values->get('page_meta_title')) {
-            return $title;
-        }
-
-        return $this->model->values->get('title') . ' ' . $this->makePageTitleSuffix();
-    }
-
-    /**
-     * @deprecated supported
-     * @see MetaModel
-     */
-    public function makePageTitleSuffix()
-    {
-        if ($this->model->values->get('page_meta_title_no_suffix')) {
-            return null;
-        }
-
-        return $this->model->settings->get('site_meta_title_suffix');
-    }
-
-    public function meta()
-    {
-        $model = app(MetaModel::class)->model();
-
-        if (method_exists($this, 'makePageTitle') || method_exists($this, 'makePageTitleSuffix')) {
-            $model->getProxiedInstance()->put('page_title', $this->makePageTitle());
-        }
-
-        return $model;
     }
 
     public function blocks()
