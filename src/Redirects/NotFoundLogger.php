@@ -80,7 +80,7 @@ class NotFoundLogger
     {
         $is_file = static function ($query) {
             // Anything that looks like a file (e.g. .jpeg)
-            $query->whereRaw('\'\..+$\' ~* path');
+            $query->whereRaw('path ~* \'\..+$\'');
             $query->where('created_at', '<', DB::raw('NOW() - interval \'1 month\''));
         };
 
