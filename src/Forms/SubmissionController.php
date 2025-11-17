@@ -4,6 +4,8 @@ namespace FewFar\Sitekit\Forms;
 
 use FewFar\Sitekit\Forms\Events\FormSubmitted;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\View;
 use Statamic\Facades\Entry;
 
@@ -43,6 +45,34 @@ class SubmissionController
         ]);
     }
 
+    /**
+     * @param \Statamic\Entries\Entry  $form
+     */
+    protected function isLikelySpam(Request $request, $form)
+    {
+        if (data_get($request->input(), 'values.' . $this->honeypotKey($form))) {
+            return true;
+        }
+
+        $timestamp = rescue(fn () => (
+            Date::parse(Crypt::decrypt($request->input('token')))
+        ), null, false);
+
+        if (! $timestamp) {
+            return true;
+        }
+
+        return now()->isBefore($timestamp);
+    }
+
+    /**
+     * @param \Statamic\Entries\Entry  $form
+     */
+    protected function honeypotKey($form)
+    {
+        return $form->get('honeypot_name') ?: 'interesting_fact';
+    }
+
     public function store(Request $request)
     {
         $valid = $request->validate([
@@ -66,6 +96,10 @@ class SubmissionController
             [],
             $fields_by_name->map->attribute->all(),
         );
+
+        if ($this->isLikelySpam($request, $form)) {
+            return response()->noContent();
+        }
 
         $values = collect($request->input('values'));
 
