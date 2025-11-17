@@ -221,8 +221,6 @@ class Cta extends FieldType
     {
         parent::register();
 
-        $js = File::get(__DIR__.'/CtaFieldtype.js');
-
-        Statamic::inlineScript(strtr('<script>:js</script>', [ ':js' => $js ]));
+        Statamic::inlineScript(File::get(__DIR__.'/CtaFieldtype.js'));
     }
 }
