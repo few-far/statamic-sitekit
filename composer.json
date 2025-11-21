@@ -2,7 +2,7 @@
     "name": "few-far/statamic-sitekit",
     "description": "We use Statamic, but we always bolt on these extra batteries + conventions so projects start at our baseline.",
     "type": "library",
-    "version": "1.0.0-alpha-11",
+    "version": "1.0.0-alpha-12",
     "require-dev": {
         "laravel/framework": "^12.30",
         "pestphp/pest": "^4.1",
