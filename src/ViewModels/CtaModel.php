@@ -196,11 +196,13 @@ class CtaModel
      */
     public function copyForEntry()
     {
-        $entry = data_get($this->value, 'entry');
+        if (! $entry = data_get($this->value, 'entry')) {
+            return null;
+        }
 
         return (
             $entry->get('page_link_text')
-            ?: $entry?->get('title')
+            ?: $entry->get('title')
         );
     }
 
