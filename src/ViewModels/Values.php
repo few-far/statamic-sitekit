@@ -13,12 +13,18 @@ use Statamic\Taxonomies\Term;
 
 class Values extends BaseValues
 {
-    public function __construct(Entry|EntryContract|Term|TermContract|BaseValues|iterable|null $values = null)
+    /**
+     * @param Entry|EntryContract|Term|TermContract|BaseValues|iterable|null  $values
+     */
+    public function __construct($values = null)
     {
         $this->setInstance($values);
     }
 
-    public function setInstance(Entry|EntryContract|Term|TermContract|BaseValues|iterable|null $values = null) : self
+    /**
+     * @param Entry|EntryContract|Term|TermContract|BaseValues|iterable|null  $values
+     */
+    public function setInstance($values = null) : self
     {
         $this->instance = match (true) {
             $values instanceof BaseValues => $values->getProxiedInstance(),
