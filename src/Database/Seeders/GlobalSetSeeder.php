@@ -5,6 +5,7 @@ namespace FewFar\Sitekit\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Statamic\Facades;
 use Statamic\Globals\GlobalSet;
+use Composer\Semver\VersionParser;
 
 class GlobalSetSeeder extends Seeder
 {
@@ -16,10 +17,17 @@ class GlobalSetSeeder extends Seeder
     {
         $this->set = $this->createGlobalSet();
 
-        $this->set->addLocalization(
-            tap($this->set->makeLocalization(Facades\Site::default()->handle()))
+        if(\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '6.*')){
+            $this->set
+                ->in(Facades\Site::default()->handle())
                 ->data($this->fixture())
-        );
+                ->save();
+        }else{
+            $this->set->addLocalization(
+                tap($this->set->makeLocalization(Facades\Site::default()->handle()))
+                    ->data($this->fixture())
+            );
+        }
 
         $this->set->save();
     }
