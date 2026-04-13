@@ -17,12 +17,12 @@ class GlobalSetSeeder extends Seeder
     {
         $this->set = $this->createGlobalSet();
 
-        if(\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '6.*')){
+        if( \Composer\InstalledVersions::satisfies( new VersionParser, 'statamic/cms', '6.*' ) ) {
             $this->set
                 ->in(Facades\Site::default()->handle())
                 ->data($this->fixture())
                 ->save();
-        }else{
+        } else {
             $this->set->addLocalization(
                 tap($this->set->makeLocalization(Facades\Site::default()->handle()))
                     ->data($this->fixture())

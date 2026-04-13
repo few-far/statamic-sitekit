@@ -102,9 +102,9 @@ abstract class Mapper
         $current = request()->uri()->path();
 
         // Statamic v6 Compatibility
-        if(\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '6.*')){
+        if( \Composer\InstalledVersions::satisfies( new VersionParser, 'statamic/cms', '6.*' ) ) {
             $url = $page->url();
-        }else{
+        } else {
             $url = $page->augmentedValue('url')->value()?->url();
         }
 
@@ -182,7 +182,7 @@ abstract class Mapper
      */
     public function toComponentsFromFields($fields)
     {
-        return $fields->flatMap(function (Values $values) {
+        return $fields->flatMap(function ($values) {
             // Statamic v6 Compatibility
             $values = $values instanceof Values ? $values : values($values);
 
