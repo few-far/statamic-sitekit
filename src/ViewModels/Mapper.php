@@ -102,7 +102,7 @@ abstract class Mapper
         $current = request()->uri()->path();
 
         // Statamic v6 Compatibility
-        if( \Composer\InstalledVersions::satisfies( new VersionParser, 'statamic/cms', '6.*' ) ) {
+        if (\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '6.*')) {
             $url = $page->url();
         } else {
             $url = $page->augmentedValue('url')->value()?->url();
