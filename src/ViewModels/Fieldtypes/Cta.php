@@ -9,7 +9,7 @@ use Statamic\Facades\Entry;
 use Statamic\Fields\Field;
 use Statamic\Fields\Fieldtype;
 use Statamic\Statamic;
-use Tiptap\Utils\HTML;
+use Composer\Semver\VersionParser;
 
 class Cta extends FieldType
 {
@@ -221,6 +221,10 @@ class Cta extends FieldType
     {
         parent::register();
 
-        Statamic::inlineScript(File::get(__DIR__.'/CtaFieldtype.js'));
+        if (\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '6.*')) {
+            Statamic::inlineScript(File::get(__DIR__.'/CtaFieldtype-v6.js'));
+        }else{
+            Statamic::inlineScript(File::get(__DIR__.'/CtaFieldtype.js'));
+        }
     }
 }
