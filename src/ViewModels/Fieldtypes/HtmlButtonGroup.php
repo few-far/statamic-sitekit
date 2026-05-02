@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Fieldtypes;
+namespace FewFar\Sitekit\ViewModels\Fieldtypes;
 
 use Statamic\Fieldtypes\ButtonGroup;
 use Statamic\Statamic;
@@ -17,7 +17,7 @@ class HtmlButtonGroup extends ButtonGroup
 
         if (\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '6.*')) {
             Statamic::inlineScript(File::get(__DIR__.'/HtmlButtonGroupFieldtype-v6.js'));
-        }else{
+        } else {
             Statamic::inlineScript(File::get(__DIR__.'/HtmlButtonGroupFieldtype.js'));
         }
     }

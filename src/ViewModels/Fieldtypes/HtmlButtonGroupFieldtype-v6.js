@@ -2,23 +2,22 @@ import _ from "lodash";
 
 export default {
 	template: `
-		<div class="button-group-fieldtype-wrapper">
-			<ui-button-group class="dark:fill-white">
-				<ui-button
-					class="btn px-2"
-					v-for="(option, $index) in options"
-					:key="$index"
-					ref="button"
-					:name="name"
-					@click="update($event.target.closest('button').value)"
-					:value="option.value"
-					:variant="option.value === value  ? 'pressed' : ''"
-					:disabled="isReadOnly"
-					:class="{'active': value === option.value}"
-					v-html="option.label || option.value"
-				/>
-			</ui-button-group>
-		</div>
+		<ui-button-group
+			style="fill: currentColor"
+		>
+			<ui-button
+				class="px-2"
+				v-for="(option, $index) in options"
+				:key="$index"
+				ref="button"
+				:name="name"
+				@click="update($event.target.closest('button').value)"
+				:value="option.value"
+				:disabled="isReadOnly"
+				:variant="value === option.value ? 'pressed' : 'default'"
+				v-html="option.label || option.value"
+			/>
+		</ui-button-group>
 	`,
 	name: "HTMLButtonGroupFieldtype",
 

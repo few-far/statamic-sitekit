@@ -19,84 +19,92 @@ function model(key, fallback) {
 
 export default {
     template: `
-		<div>
-			<ui-button v-if="meta.enabled === 'optional' && !enabled" class="btn" @click="enabled = true">
-				{{ meta.addLabel }}
+		<ui-button v-if="meta.enabled === 'optional' && !enabled" @click="enabled = true">
+			{{ meta.addLabel }}
+		</ui-button>
+
+		<div v-else class="flex items-top gap-3">
+			<ui-button v-if="meta.enabled ==='optional'" @click="enabled = false">
+				Remove
 			</ui-button>
 
-			<div v-else class="flex items-top gap-3">
-				<ui-button v-if="meta.enabled ==='optional'" @click="enabled = false" class="text-sm text-blue hover:text-black">
-					Remove
+			<ui-button-group>
+				<ui-button
+					class="px-1"
+					:variant="option === 'url' ? 'pressed' : 'default'"
+					@click="option = 'url'"
+				>
+					Url
 				</ui-button>
 
-				<div>
-					<ui-button-group>
-						<ui-button class="btn px-1" :variant="!option || option === 'url' ? 'pressed' : ''"  @click="option = 'url'">
-							Url
-						</ui-button>
+				<ui-button
+					class="px-1"
+					:variant="option === 'entry' ? 'pressed' : 'default'"
+					@click="option = 'entry'"
+				>
+					Entry
+				</ui-button>
 
-						<ui-button class="btn px-1" :variant="option === 'entry' ? 'pressed' : ''"  @click="option = 'entry'">
-							Entry
-						</ui-button>
+				<ui-button
+					class="px-1"
+					:variant="option === 'asset' ? 'pressed' : 'default'"
+					@click="option = 'asset'"
+				>
+					Asset
+				</ui-button>
+			</ui-button-group>
 
-						<ui-button class="btn px-1" :variant="option === 'asset' ? 'pressed' : ''"  @click="option = 'asset'">
-							Asset
-						</ui-button>
-					</ui-button-group>
-				</div>
-
-				<div class="flex-1 max-w-[45%]">
-					<div class="pb-1">
-						<!-- Text field -->
-						<text-fieldtype
-							v-if="!option || option === 'url'"
-							v-model="url"
-							:config="{ placeholder: 'https://...' }"
-						/>
-
-						<!-- Entry select -->
-						<relationship-fieldtype
-							v-if="option === 'entry'"
-							ref="entries"
-							handle="entry"
-							:style="!entry?.[0] ? 'padding-block: .25rem' : ''"
-							:config="meta.entry.config"
-							:meta="meta.entry.meta"
-                			:value="entry"
-							@update:meta="meta.entry.meta = $event"
-							@update:value="entriesSelected"
-						/>
-
-						<!-- Asset select -->
-						<div
-							v-if="option === 'asset'"
-							:class="{ 'link-fieldtype': !asset?.[0] }"
-						>
-							<assets-fieldtype
-								ref="assets"
-								handle="asset"
-								:config="meta.asset.config"
-								:meta="meta.asset.meta"
-								:value="asset"
-								@update:value="asset = $event"
-							/>
-						</div>
-					</div>
-
-					<ui-checkbox
-						v-model="openInNewTab"
-						class="mr-1"
-						label="Open in new tab?"
-					/>
-				</div>
-
-				<div v-if="meta.label === 'show'" class="flex-1">
+			<div class="flex-1 max-w-[45%]">
+				<div class="pb-1">
 					<!-- Text field -->
 					<text-fieldtype
-						v-model="label"
-						:config="{ placeholder: meta.label_placeholder || 'Label' }"
+						v-if="!option || option === 'url'"
+						v-model="url"
+						:config="{ placeholder: 'https://...' }"
 					/>
+
+					<!-- Entry select -->
+					<relationship-fieldtype
+						v-if="option === 'entry'"
+						ref="entries"
+						handle="entry"
+						:style="!entry?.[0] ? 'padding-block: .25rem' : ''"
+						:config="meta.entry.config"
+						:meta="meta.entry.meta"
+						:value="entry"
+						@update:meta="meta.entry.meta = $event"
+						@update:value="entriesSelected"
+					/>
+
+					<!-- Asset select -->
+					<div
+						v-if="option === 'asset'"
+						:class="{ 'link-fieldtype': !asset?.[0] }"
+					>
+						<assets-fieldtype
+							ref="assets"
+							handle="asset"
+							:config="meta.asset.config"
+							:meta="meta.asset.meta"
+							:value="asset"
+							@update:value="asset = $event"
+						/>
+					</div>
 				</div>
+
+				<ui-checkbox
+					v-model="openInNewTab"
+					class="mr-1"
+					label="Open in new tab?"
+				/>
+			</div>
+
+			<div v-if="meta.label === 'show'" class="flex-1">
+				<!-- Text field -->
+				<text-fieldtype
+					v-model="label"
+					:config="{ placeholder: meta.label_placeholder || 'Label' }"
+				/>
 			</div>
 		</div>
 	`,
@@ -109,7 +117,7 @@ export default {
     },
     computed: {
         enabled: model("enabled"),
-        option: model("option"),
+        option: model("option", 'url'),
         url: model("url"),
         entry: model("entry", []),
         asset: model("asset", []),

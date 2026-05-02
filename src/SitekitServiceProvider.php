@@ -2,6 +2,7 @@
 
 namespace FewFar\Sitekit;
 
+use FewFar\Sitekit\Cms\CmsServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
 class SitekitServiceProvider extends ServiceProvider
@@ -20,5 +21,6 @@ class SitekitServiceProvider extends ServiceProvider
         $this->app->register(ViewModels\ViewModelsServiceProvider::class);
         $this->app->register(Imaging\ImagingServiceProvider::class);
         $this->app->register(Support\SupportServiceProvider::class);
+        $this->app->register(CmsServiceProvider::class);
     }
 }
