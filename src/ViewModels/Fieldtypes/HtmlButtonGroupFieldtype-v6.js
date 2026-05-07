@@ -2,9 +2,7 @@ import _ from "lodash";
 
 export default {
 	template: `
-		<ui-button-group
-			style="fill: currentColor"
-		>
+		<ui-button-group class="~fill-current">
 			<ui-button
 				class="px-2"
 				v-for="(option, $index) in options"

@@ -43,6 +43,21 @@ class CmsServiceProvider extends EventServiceProvider
         if ($resources->isEmpty()) {
             return;
         }
+
+        \Statamic\Statamic::inlineScript(<<<'JS'
+            const s = document.createElement( 'script' );
+            s.setAttribute( 'src', 'https://cdn.tailwindcss.com');
+            document.body.appendChild( s );
+            s.addEventListener('load', () => {
+                tailwind.config = {
+                    prefix: '~',
+                    corePlugins: {
+                        preflight: false,
+                    },
+                }
+            })
+        JS);
+
         \Statamic\Statamic::vite('app', $resources->all());
     }
 
