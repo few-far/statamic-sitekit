@@ -15,7 +15,7 @@ class CreatePageModel
 
     public function ignoreRouteMappers(bool $ignore)
     {
-        $this->ignoreRouteMappers = true;
+        $this->ignoreRouteMappers = $ignore;
 
         return $this;
     }
