@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Event;
 use Statamic\Entries\Collection;
 use Statamic\Facades;
 use Statamic\Structures\CollectionTree;
+use Statamic\Fieldtypes\Bard;
 
 class CollectionSeeder extends Seeder
 {
@@ -173,6 +174,36 @@ class CollectionSeeder extends Seeder
                 $this->seed($item->children);
             }
         }
+    }
+
+    public function bard(?string $attribute, ?string $blueprint = null)
+    {
+        $bard = $this->collection()
+            ->entryBlueprint($blueprint)
+            ->field($attribute)
+            ->fieldtype();
+
+        return new class($bard) {
+            public function __construct(public Bard $bard)
+            {
+            }
+
+            public function make(iterable $items)
+            {
+                return collect($items)
+                    ->flatMap(fn ($item) => match (true) {
+                        is_string($item) => $this->bard->preProcess($item),
+                        is_array($item) => [
+                            [
+                                'type' => 'set',
+                                'attrs' => [ 'values' => $item ],
+                            ],
+                        ],
+                        default => throw new Exception('Unexpected type for $item, only strings (as html) and sets (blocks) are supported.')
+                    })
+                    ->all();
+            }
+        };
     }
 
     /**
