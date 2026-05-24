@@ -47,7 +47,7 @@ class SocialShareServiceProvider extends ServiceProvider
      */
     protected function configureRoutes()
     {
-        if (! config('sitekit.social_share.enable')) {
+        if (! config('sitekit.social_share.enabled')) {
             return;
         }
 

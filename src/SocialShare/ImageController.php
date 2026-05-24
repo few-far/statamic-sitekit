@@ -25,15 +25,16 @@ class ImageController
 
         $this->handleHashRedirect($entry, $request->query('hash'));
 
-        return response()
-            ->make($this->images->image($entry))
-            ->header('Content-Type', 'image/webp');
+        return response()->make($this->images->image($entry), 200, [
+            'Content-Type' => 'image/webp',
+            'Cache-Control' => 'public, max-age=31536000, immutable',
+        ]);
     }
 
     /**
      * Checks to see if the has is the latest, redirecting if not.
      *
-     * @throws \Illuminate\Http\Exceptions\HttpResponseException if hash provided is not the latest.
+     * @throws \Illuminate\Http\Exceptions\HttpResponseException if hash is out of date.
      */
     protected function handleHashRedirect(Entry $entry, ?string $hash)
     {

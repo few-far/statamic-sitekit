@@ -11,6 +11,7 @@ use Statamic\Facades;
 use Statamic\Structures\Page;
 use Composer\Semver\VersionParser;
 use FewFar\Sitekit\SocialShare\ImageGenerator;
+use Illuminate\Support\Facades\View;
 
 abstract class Mapper
 {
@@ -230,7 +231,7 @@ abstract class Mapper
             return null;
         }
 
-        if (! $this->makeSocialShareViewName()) {
+        if (! View::exists($this->makeSocialShareViewName())) {
             return null;
         }
 

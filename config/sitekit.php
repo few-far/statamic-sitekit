@@ -13,6 +13,7 @@ return [
     */
     'social_share' => [
 
+        'enabled' => env('SITEKIT_SOCIAL_SHARE_ENABLED', true),
         'chrome_path' => env('SITEKIT_SOCIAL_SHARE_CHROME_PATH', '/usr/bin/chromium'),
         'render_url' => env('SITEKIT_SOCIAL_SHARE_RENDER_URL', 'http://localhost:8000'),
         'window_size' => env('SITEKIT_SOCIAL_SHARE_WINDOW_SIZE', '1200x840'),
