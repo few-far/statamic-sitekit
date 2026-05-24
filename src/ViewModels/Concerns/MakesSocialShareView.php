@@ -43,6 +43,9 @@ trait MakesSocialShareView
         ];
     }
 
+    /**
+     * Model data for the social share view.
+     */
     public function makeSocialShareViewModel()
     {
         return [
