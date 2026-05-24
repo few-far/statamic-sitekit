@@ -8,6 +8,13 @@ use Statamic\Events\EntrySaved;
 class HandleImageCleanup
 {
     /**
+     * Creates an instance of the Subscriber.
+     */
+    public function __construct(protected ImageGenerator $generator)
+    {
+    }
+
+    /**
      * Register events.
      */
     public function subscribe()
@@ -25,20 +32,20 @@ class HandleImageCleanup
     /**
      * Remove cached images if the Entry has changed.
      */
-    public function handleSaved(EntrySaved $event, ImageGenerator $generator)
+    public function handleSaved(EntrySaved $event)
     {
-        if ($generator->storage()->exists($generator->screenshotPath($event->entry))) {
+        if ($this->generator->storage()->exists($this->generator->screenshotPath($event->entry))) {
             return;
         }
 
-        $generator->cleanup($event->entry);
+        $this->generator->cleanup($event->entry);
     }
 
     /**
      * Remove cached images when Entry is deleted.
      */
-    public function handleDeleted(EntryDeleted $event, ImageGenerator $generator)
+    public function handleDeleted(EntryDeleted $event)
     {
-        $generator->cleanup($event->entry);
+        $this->generator->cleanup($event->entry);
     }
 }
