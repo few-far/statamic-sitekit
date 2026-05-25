@@ -2,30 +2,28 @@ import _ from "lodash";
 
 export default {
 	template: `
-		<ui-button-group class="~fill-current">
+		<ui-button-group>
 			<ui-button
-				class="px-2"
 				v-for="(option, $index) in options"
-				:key="$index"
 				ref="button"
+				:disabled="config.disabled"
+				:key="$index"
 				:name="name"
-				@click="update($event.target.closest('button').value)"
+				:read-only="isReadOnly"
+				:text="option.label || option.value"
 				:value="option.value"
-				:disabled="isReadOnly"
-				:variant="value === option.value ? 'pressed' : 'default'"
+				:variant="value == option.value ? 'pressed' : 'default'"
+				@click="update($event.target.closest('button').value)"
 				v-html="option.label || option.value"
 			/>
 		</ui-button-group>
 	`,
 	name: "HTMLButtonGroupFieldtype",
-
 	props: {
 		value: String,
 		config: Object,
 		name: String,
-		isReadOnly: Boolean,
 	},
-
 	computed: {
 		options() {
             return _.map(this.config.options, (value, key) => {
