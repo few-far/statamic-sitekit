@@ -96,7 +96,8 @@ document.addEventListener('alpine:init', function () {
                 </div>
 
                 <div v-if="meta.label === 'show'" class="flex flex-col flex-1">
-                    <div class="pb-1"> <text-fieldtype
+                    <div class="pb-1">
+						<text-fieldtype
                             v-model="label"
                             :config="{ placeholder: meta.label_placeholder || 'Label' }"
                         />
