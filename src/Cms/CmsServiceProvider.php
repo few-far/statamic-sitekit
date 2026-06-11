@@ -45,17 +45,19 @@ class CmsServiceProvider extends EventServiceProvider
         }
 
         \Statamic\Statamic::inlineScript(<<<'JS'
-            const s = document.createElement( 'script' );
-            s.setAttribute( 'src', 'https://cdn.tailwindcss.com');
-            document.body.appendChild( s );
-            s.addEventListener('load', () => {
-                tailwind.config = {
-                    prefix: '~',
-                    corePlugins: {
-                        preflight: false,
-                    },
-                }
-            })
+            const style = document.createElement('style');
+            style.setAttribute('type', 'text/tailwindcss');
+            style.innerHTML = `
+                @layer theme, base, components, utilities;
+
+                @import "tailwindcss/theme.css" layer(theme) prefix(faf);
+                @import "tailwindcss/utilities.css" layer(utilities) prefix(faf);
+            `;
+            document.body.appendChild(style);
+
+            const script = document.createElement( 'script' );
+            script.setAttribute('src', 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4');
+            document.body.appendChild(script);
         JS);
 
         \Statamic\Statamic::vite('app', $resources->all());

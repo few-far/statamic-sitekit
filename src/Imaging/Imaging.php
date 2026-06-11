@@ -7,7 +7,7 @@ use Intervention\Image\Constraint;
 use Intervention\Image\ImageManager;
 use Statamic\Contracts\Assets\Asset;
 use Composer\Semver\VersionParser;
-use Intervention\Image\Drivers\Imagick\Driver;
+use Intervention\Image\Drivers;
 
 class Imaging
 {
@@ -89,7 +89,7 @@ class Imaging
     {
         // Statamic v6 Compatibility
         if (\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '6.*')) {
-            return new ImageManager(Driver::class);
+            return new ImageManager(Drivers\Imagick\Driver::class);
         } else {
             return new ImageManager(['driver' => 'imagick']);
         }
