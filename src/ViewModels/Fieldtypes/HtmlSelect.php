@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Fieldtypes;
+namespace FewFar\Sitekit\ViewModels\Fieldtypes;
 
 use Statamic\Fieldtypes\Select;
 use Statamic\Statamic;

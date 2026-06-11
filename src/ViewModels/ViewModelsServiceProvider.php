@@ -30,6 +30,7 @@ class ViewModelsServiceProvider extends ServiceProvider
     {
         Fieldtypes\Cta::register();
         Fieldtypes\HtmlButtonGroup::register();
+        Fieldtypes\HtmlSelect::register();
 
         Facades\View::composer('statamic::entries.create', PreparePublishFormFields::class);
 
