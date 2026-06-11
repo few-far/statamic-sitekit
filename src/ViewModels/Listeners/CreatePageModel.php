@@ -15,7 +15,7 @@ class CreatePageModel
 
     public function ignoreRouteMappers(bool $ignore)
     {
-        $this->ignoreRouteMappers = true;
+        $this->ignoreRouteMappers = $ignore;
 
         return $this;
     }
@@ -134,7 +134,7 @@ class CreatePageModel
         $mappers = $this->mappers();
 
         if (! $this->ignoreRouteMappers) {
-            if ($route = $mappers['@routes'][request()->route()->getName()] ?? null) {
+            if ($route = $mappers['@routes'][request()->route()?->getName()] ?? null) {
                 return $route;
             }
         }

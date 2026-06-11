@@ -1,9 +1,7 @@
 <?php
 
 use FewFar\Sitekit\ViewModels\Values;
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Support\HtmlString;
 
 if (! function_exists('attrs')) {
     /**

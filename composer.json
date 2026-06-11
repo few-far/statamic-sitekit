@@ -2,8 +2,9 @@
   "name": "few-far/statamic-sitekit",
   "description": "We use Statamic, but we always bolt on these extra batteries + conventions so projects start at our baseline.",
   "type": "library",
-  "version": "1.0.0-alpha-14",
+  "version": "1.0.0-alpha-18",
   "require-dev": {
+    "chrome-php/chrome": "^1.15",
     "laravel/framework": "^12.0 || ^13.0",
     "pestphp/pest": "^4.5",
     "larastan/larastan": "^3.9.5",
@@ -23,7 +24,11 @@
   "authors": [
     {
       "name": "Thomas Nadin",
-      "email": "nadinengland@gmail.com"
+      "email": "thomas@fewandfar.co.uk"
+    },
+    {
+      "name": "Maurovic Cachia",
+      "email": "mauro@fewandfar.co.uk"
     }
   ],
   "extra": {

@@ -39,7 +39,7 @@ class AssetModel
                     'height' => $dimensions[1] ?? null,
                     // TODO: Merge x-focal-point and data-focus
                     'data-src' => $this->asset->url(),
-                    '@error' => '$el.src = $el.dataset.src',
+                    '@error' => '$el.removeAttribute("@error"); $el.src = $el.dataset.src',
                     'x-focal-point' => str($this->asset->get('focus'))
                         ->explode('-')
                         ->take(2)

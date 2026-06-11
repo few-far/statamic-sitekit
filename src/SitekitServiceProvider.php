@@ -14,6 +14,17 @@ class SitekitServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerConfig();
+        $this->registerServiceProviders();
+    }
+
+    public function registerConfig()
+    {
+        $this->mergeConfigFrom(__DIR__.'/../config/sitekit.php', 'sitekit');
+    }
+
+    public function registerServiceProviders()
+    {
         $this->app->register(MonkeyPatch\MonkeyPatchServiceProvider::class);
         $this->app->register(Redirects\RedirectServiceProvider::class);
         $this->app->register(Forms\FormsServiceProvider::class);
@@ -22,5 +33,6 @@ class SitekitServiceProvider extends ServiceProvider
         $this->app->register(Imaging\ImagingServiceProvider::class);
         $this->app->register(Support\SupportServiceProvider::class);
         $this->app->register(CmsServiceProvider::class);
+        $this->app->register(SocialShare\SocialShareServiceProvider::class);
     }
 }

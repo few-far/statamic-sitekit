@@ -10,17 +10,24 @@ use Statamic\Contracts\Entries\Entry;
 use Statamic\Facades;
 use Statamic\Structures\Page;
 use Composer\Semver\VersionParser;
+use FewFar\Sitekit\SocialShare\ImageGenerator;
+use Illuminate\Support\Facades\View;
 
 abstract class Mapper
 {
-    use Concerns\MakesMeta;
+    use Concerns\MakesMeta {
+        makeMetaSocialImage as _makeMetaSocialImage;
+    }
+    use Concerns\MakesSocialShareView;
 
     public Entry $entry;
+    public Values $values;
     public PageModel $model;
 
     public function setEntry(Entry $entry)
     {
         $this->entry = $entry;
+        $this->values = values($entry);
 
         return $this;
     }
@@ -212,5 +219,25 @@ abstract class Mapper
         $fields = values($entry)->collect('blocks');
 
         return $this->toComponentsFromFields($fields);
+    }
+
+    public function makeMetaSocialImage()
+    {
+        if ($explicit = $this->_makeMetaSocialImage()) {
+            return $explicit;
+        }
+
+        if (! config('sitekit.social_share.enabled')) {
+            return null;
+        }
+
+        if (! View::exists($this->makeSocialShareViewName())) {
+            return null;
+        }
+
+        return url()->signedRoute('sitekit.social-share', [
+            'id' => $this->entry->id(),
+            'hash' => app(ImageGenerator::class)->screenshotHash($this->entry),
+        ]);
     }
 }
