@@ -20,6 +20,7 @@ class CmsServiceProvider extends EventServiceProvider
     {
         $this->configureControlPanelNav();
         $this->configureControlPanelAssets();
+        $this->configureControlPanelTailwind();
     }
 
     protected function configureControlPanelNav()
@@ -35,32 +36,36 @@ class CmsServiceProvider extends EventServiceProvider
         });
     }
 
-
     protected function configureControlPanelAssets()
     {
         $resources = collect($this->resources)
             ->filter(base_path(...));
+
         if ($resources->isEmpty()) {
             return;
         }
 
-        \Statamic\Statamic::inlineScript(<<<'JS'
-            const style = document.createElement('style');
-            style.setAttribute('type', 'text/tailwindcss');
-            style.innerHTML = `
-                @layer theme, base, components, utilities;
-
-                @import "tailwindcss/theme.css" layer(theme) prefix(faf);
-                @import "tailwindcss/utilities.css" layer(utilities) prefix(faf);
-            `;
-            document.body.appendChild(style);
-
-            const script = document.createElement( 'script' );
-            script.setAttribute('src', 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4');
-            document.body.appendChild(script);
-        JS);
-
         \Statamic\Statamic::vite('app', $resources->all());
     }
 
+    protected function configureControlPanelTailwind()
+    {
+        \Statamic\Statamic::inlineScript(<<<'JS'
+            (function () {
+                const style = document.createElement('style');
+                style.setAttribute('type', 'text/tailwindcss');
+                style.innerHTML = `
+                    @layer theme, base, components, utilities;
+
+                    @import "tailwindcss/theme.css" layer(theme) prefix(faf);
+                    @import "tailwindcss/utilities.css" layer(utilities) prefix(faf);
+                `;
+                document.body.appendChild(style);
+
+                const script = document.createElement( 'script' );
+                script.setAttribute('src', 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4');
+                document.body.appendChild(script);
+            })();
+        JS);
+    }
 }
