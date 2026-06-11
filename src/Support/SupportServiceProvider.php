@@ -2,6 +2,7 @@
 
 namespace FewFar\Sitekit\Support;
 
+use Composer\Semver\VersionParser;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
@@ -45,16 +46,31 @@ class SupportServiceProvider extends ServiceProvider
             'production' => 'status-published',
         ][$env] ?? 'status-working-copy';
 
-        \Statamic\Statamic::inlineScript(<<<JS
-            document.addEventListener('alpine:init', () => {
-                Statamic.booted(() => {
-                    const parent = document.querySelector('.global-header>:first-child');
-                    const element = document.createElement('div')
-                    element.innerText = '$env';
-                    element.classList.add('status-index-field', '$status', 'ml-4', 'text-4xs', 'font-mono');
-                    parent.appendChild(element);
+        // Statamic v6 Compatibility
+        if (\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '6.*')) {
+            \Statamic\Statamic::inlineScript(<<<JS
+                document.addEventListener('alpine:init', () => {
+                    Statamic.booted(() => {
+                        const parent = document.querySelector('[data-global-header-breadcrumbs]');
+                        const element = document.createElement('div')
+                        element.innerText = '$env';
+                        element.classList.add('status-index-field', '$status', 'text-4xs', 'font-mono');
+                        parent.insertBefore(element, parent.firstChild);
+                    });
                 });
-            });
-        JS);
+            JS);
+        } else {
+            \Statamic\Statamic::inlineScript(<<<JS
+                document.addEventListener('alpine:init', () => {
+                    Statamic.booted(() => {
+                        const parent = document.querySelector('.global-header>:first-child');
+                        const element = document.createElement('div')
+                        element.innerText = '$env';
+                        element.classList.add('status-index-field', '$status', 'ml-4', 'text-4xs', 'font-mono');
+                        parent.appendChild(element);
+                    });
+                });
+            JS);
+        }
     }
 }

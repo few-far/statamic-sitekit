@@ -6,6 +6,7 @@ use FewFar\Sitekit\Redirects\CP\RedirectController;
 use Illuminate\Support\Facades;
 use Illuminate\Support\ServiceProvider;
 use Statamic\Exceptions\NotFoundHttpException;
+use Composer\Semver\VersionParser;
 
 class RedirectServiceProvider extends ServiceProvider
 {
@@ -47,8 +48,12 @@ class RedirectServiceProvider extends ServiceProvider
             $nav->tools('Redirects')
                 ->route('redirects')
                 ->icon('git')
-                ->active('redirect')
                 ->can('manage redirects');
+
+
+            if (!\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '6.*')) {
+                $nav->active('redirect');
+            }
         });
 
         \Statamic\Statamic::pushCpRoutes(function () {
