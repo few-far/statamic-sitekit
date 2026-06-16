@@ -2,6 +2,7 @@
 
 namespace FewFar\Sitekit\Database\Seeders;
 
+use Exception;
 use Illuminate\Database\Seeder;
 use Statamic\Eloquent\Entries\Entry;
 use Statamic\Fieldtypes\Bard;
