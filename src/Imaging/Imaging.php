@@ -19,15 +19,41 @@ class Imaging
 
         $config = $this->config($asset);
 
-        $image = $this->manager()
-            ->make($asset->resolvedPath())
-            ->encode($config['encode'], $config['quality']);
+        // Statamic v6 Compatibility
+        if (\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '6.*')) {
+            $image = $this->manager()->read($asset->resolvedPath());
 
-        $resized = $image->getSize()->resize($config['width'], $config['height'], function (Constraint $constraint) {
-            $constraint->aspectRatio();
-        });
+            $image->scale(
+                width: $config['width'],
+                height: $config['height']
+            );
 
-        $image->getCore()->resizeImage($resized->getWidth(), $resized->getHeight(), \Imagick::FILTER_CATROM, $blur = 1);
+            $imagick = $image->core()->native();
+
+            if ($imagick instanceof \Imagick) {
+                $imagick->resizeImage(
+                    $image->width(),
+                    $image->height(),
+                    \Imagick::FILTER_CATROM,
+                    $blur = 1
+                );
+            }Imagick
+
+            $image = $image->encodeByExtension($config['encode'], $config['quality']);
+
+        } else {
+            $image = $this->manager()
+                ->make($asset->resolvedPath())
+                ->encode($config['encode'], $config['quality']);
+
+            $resized = $image->getSize()->resize($config['width'], $config['height'], function (Constraint $constraint) {
+                $constraint->aspectRatio();
+            });
+
+
+            $image->getCore()->resizeImage($resized->getWidth(), $resized->getHeight(), \Imagick::FILTER_CATROM, $blur = 1);
+        }
+
 
         $path = tap($this->realPath($this->path($asset, $config)), function ($path) {
             File::ensureDirectoryExists(dirname($path));
