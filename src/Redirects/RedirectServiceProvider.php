@@ -45,14 +45,14 @@ class RedirectServiceProvider extends ServiceProvider
     protected function configureControlPanel()
     {
         \Statamic\Facades\CP\Nav::extend(function ($nav) {
-            $nav->tools('Redirects')
+            $node = $nav->tools('Redirects')
                 ->route('redirects')
                 ->icon('git')
                 ->can('manage redirects');
 
 
-            if (!\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '6.*')) {
-                $nav->active('redirect');
+            if (! \Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '6.*')) {
+                $node->active('redirect');
             }
         });
 
