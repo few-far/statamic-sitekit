@@ -37,7 +37,7 @@ class Imaging
                     \Imagick::FILTER_CATROM,
                     $blur = 1
                 );
-            }Imagick
+            }
 
             $image = $image->encodeByExtension($config['encode'], $config['quality']);
 
