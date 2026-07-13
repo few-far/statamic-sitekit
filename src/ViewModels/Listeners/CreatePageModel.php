@@ -133,7 +133,7 @@ class CreatePageModel
 
         $mappers = $this->mappers();
 
-        if (! $this->ignoreRouteMappers) {
+        if (! $this->ignoreRouteMappers && ! app()->runningInConsole()) {
             if ($route = $mappers['@routes'][request()->route()?->getName()] ?? null) {
                 return $route;
             }

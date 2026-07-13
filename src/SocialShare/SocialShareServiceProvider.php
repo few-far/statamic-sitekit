@@ -29,6 +29,10 @@ class SocialShareServiceProvider extends ServiceProvider
      */
     protected function registerListeners()
     {
+        if (! config('sitekit.social_share.enabled')) {
+            return;
+        }
+
         Facades\Event::subscribe(HandleImageCleanup::class);
     }
 
