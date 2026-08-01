@@ -18,6 +18,10 @@ class CmsServiceProvider extends EventServiceProvider
 
     public function boot(): void
     {
+        Fieldtypes\Cta::register();
+        Fieldtypes\HtmlButtonGroup::register();
+        Fieldtypes\HtmlSelect::register();
+
         $this->configureControlPanelNav();
         $this->configureControlPanelAssets();
         $this->configureControlPanelTailwind();

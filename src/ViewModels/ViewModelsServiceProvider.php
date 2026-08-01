@@ -28,10 +28,6 @@ class ViewModelsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Fieldtypes\Cta::register();
-        Fieldtypes\HtmlButtonGroup::register();
-        Fieldtypes\HtmlSelect::register();
-
         Facades\View::composer('statamic::entries.create', PreparePublishFormFields::class);
 
         Facades\Event::listen(PreparingResponse::class, CreatePageModel::class);

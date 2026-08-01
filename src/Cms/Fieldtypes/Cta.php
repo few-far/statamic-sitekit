@@ -1,6 +1,6 @@
 <?php
 
-namespace FewFar\Sitekit\ViewModels\Fieldtypes;
+namespace FewFar\Sitekit\Cms\Fieldtypes;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
