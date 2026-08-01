@@ -51,7 +51,7 @@ class RedirectServiceProvider extends ServiceProvider
                 ->can('manage redirects');
 
 
-            if (! \Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '6.*')) {
+            if (! \Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '>=6.0')) {
                 $node->active('redirect');
             }
         });

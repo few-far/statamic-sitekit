@@ -47,7 +47,7 @@ class SupportServiceProvider extends ServiceProvider
         ][$env] ?? 'status-working-copy';
 
         // Statamic v6 Compatibility
-        if (\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '6.*')) {
+        if (\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '>=6.0')) {
             \Statamic\Statamic::inlineScript(<<<JS
                 document.addEventListener('alpine:init', () => {
                     Statamic.booted(() => {

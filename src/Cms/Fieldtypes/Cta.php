@@ -221,7 +221,7 @@ class Cta extends FieldType
     {
         parent::register();
 
-        if (\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '6.*')) {
+        if (\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '>=6.0')) {
             Statamic::inlineScript(File::get(__DIR__.'/CtaFieldtype-v6.js'));
         } else {
             Statamic::inlineScript(File::get(__DIR__.'/CtaFieldtype.js'));

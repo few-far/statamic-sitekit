@@ -20,7 +20,7 @@ class Imaging
         $config = $this->config($asset);
 
         // Statamic v6 Compatibility
-        if (\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '6.*')) {
+        if (\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '>=6.0')) {
             $image = $this->manager()->read($asset->resolvedPath());
 
             $image->scale(
@@ -114,7 +114,7 @@ class Imaging
     public function manager()
     {
         // Statamic v6 Compatibility
-        if (\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '6.*')) {
+        if (\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '>=6.0')) {
             return new ImageManager(Drivers\Imagick\Driver::class);
         } else {
             return new ImageManager(['driver' => 'imagick']);

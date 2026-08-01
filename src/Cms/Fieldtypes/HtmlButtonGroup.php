@@ -15,7 +15,7 @@ class HtmlButtonGroup extends ButtonGroup
     {
         parent::register();
 
-        if (\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '6.*')) {
+        if (\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '>=6.0')) {
             Statamic::inlineScript(File::get(__DIR__.'/HtmlButtonGroupFieldtype-v6.js'));
         } else {
             Statamic::inlineScript(File::get(__DIR__.'/HtmlButtonGroupFieldtype.js'));
