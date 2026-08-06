@@ -72,7 +72,7 @@ class CreatePageModel
             return;
         }
 
-        abort(redirect($redirect));
+        abort(redirect(is_array($redirect) ? $redirect['url'] : $redirect));
     }
 
     /**
