@@ -113,6 +113,7 @@ abstract class Mapper
         $item = [
             'link' => attrs([
                 'href' => $url,
+                'target' => $page->augmentedValue('open_in_new_tab')?->value() ? '_blank' : null,
                 'aria-current' => when($url, fn ($url) => (
                     strval($current === Uri::of($url)->path())
                         ? 'page'
