@@ -51,7 +51,7 @@ class Cta extends FieldType
                 default => 'url',
             },
             'label' => Arr::get($value, 'label') ?: Arr::get($value, 'label_default'),
-            'url' => null,
+            'url' => $url,
             'entry' => !$is_entry ? null : $entry,
             'asset' => !$is_asset ? null : $asset,
             'open_in_new_tab' => (Arr::get($value, 'open_in_new_tab') === true),
