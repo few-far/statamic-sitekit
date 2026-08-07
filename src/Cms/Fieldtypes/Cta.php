@@ -34,6 +34,16 @@ class Cta extends FieldType
         $entry = !$is_entry ? null : Entry::find(Arr::get($value, 'entry.0'));
         $asset = !$is_asset ? null : Asset::find(Arr::get($value, 'asset.0') ?? '');
 
+        $url = match (true) {
+            $is_entry => $entry?->url(),
+            $is_asset => $asset?->url(),
+            default => Arr::get($value, 'url'),
+        };
+
+        if (! $url) {
+            return null;
+        }
+
         return [
             'option' => match (true) {
                 $is_entry => 'entry',
@@ -41,12 +51,7 @@ class Cta extends FieldType
                 default => 'url',
             },
             'label' => Arr::get($value, 'label') ?: Arr::get($value, 'label_default'),
-            'url' => match (true) {
-                $is_optional && !$is_enabled => null,
-                $is_entry => $entry?->url(),
-                $is_asset => $asset?->url(),
-                default => Arr::get($value, 'url'),
-            },
+            'url' => null,
             'entry' => !$is_entry ? null : $entry,
             'asset' => !$is_asset ? null : $asset,
             'open_in_new_tab' => (Arr::get($value, 'open_in_new_tab') === true),
