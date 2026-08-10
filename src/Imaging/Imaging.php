@@ -21,7 +21,7 @@ class Imaging
 
         // Statamic v6 Compatibility
         if (\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '>=6.0')) {
-            $image = $this->manager()->read($asset->resolvedPath());
+            $image = $this->manager()->decode($asset->resolvedPath());
 
             $image->scale(
                 width: $config['width'],
@@ -39,7 +39,7 @@ class Imaging
                 );
             }
 
-            $image = $image->encodeByExtension($config['encode'], $config['quality']);
+            $image = $image->encodeUsingFileExtension($config['encode'], $config['quality']);
 
         } else {
             $image = $this->manager()
