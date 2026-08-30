@@ -107,8 +107,12 @@ abstract class Mapper
     protected function makeNavItem(Page $page)
     {
         $current = request()->uri()->path();
-
-        $url = $page->augmentedValue('url')->value()?->url();
+        
+        $url = $page->url();
+        
+        if (!$url) {
+            $url = $page->augmentedValue('url')->value()?->url();
+        }
 
         $item = [
             'link' => attrs([
