@@ -55,17 +55,22 @@ class HandleNotFoundException
      */
     protected function attemptAuthenticatedViewing(NotFoundHttpException $ex, Closure $next): mixed
     {
-        if (Auth::check()) {
-            $path = $this->request->getPathInfo();
-
-            $entry = FacadesEntry::findByUri($path, Site::default()->handle());
-
-            if ($entry) {    
-                return response()->view('page');
-            }
+        if (! Auth::check()) {
+            return $next($ex);
         }
 
-        return $next($ex);
+        $path = $this->request->getPathInfo();
+
+        if (! $entry = FacadesEntry::findByUri($path, Site::default()->handle())) {
+            return $next($ex);
+        }
+
+        return response()->make(
+            app(\Statamic\View\View::class)
+                ->template($entry->template())
+                ->layout($entry->layout())
+                ->cascadeContent($entry)
+        );
     }
 
     /**
