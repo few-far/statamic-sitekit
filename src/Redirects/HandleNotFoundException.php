@@ -6,10 +6,13 @@ use FewFar\Sitekit\ViewModels\Listeners\CreatePageModel;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Statamic\Facades\Entry as FacadesEntry;
 use Illuminate\Support\Facades\Pipeline;
 use Statamic\Contracts\Entries\Entry;
 use Statamic\Exceptions\NotFoundHttpException;
 use Statamic\Facades\GlobalSet;
+use Statamic\Facades\Site;
 use Statamic\Statamic;
 
 class HandleNotFoundException
@@ -38,10 +41,31 @@ class HandleNotFoundException
 
         return Pipeline::send($ex)
             ->through([
+                $this->attemptAuthenticatedViewing(...),
                 $this->attemptCmsableRedirect(...),
                 $this->attemptNotFoundEntry(...),
             ])
             ->thenReturn();
+    }
+
+    /**
+     * Check if entry exists and is not published, and if user is authenticated
+     *
+     * @param callable(NotFoundHttpException $ex): mixed $next
+     */
+    protected function attemptAuthenticatedViewing(NotFoundHttpException $ex, Closure $next): mixed
+    {
+        if (Auth::check()) {
+            $path = $this->request->getPathInfo();
+
+            $entry = FacadesEntry::findByUri($path, Site::default()->handle());
+
+            if ($entry) {    
+                return response()->view('page');
+            }
+        }
+
+        return $next($ex);
     }
 
     /**
