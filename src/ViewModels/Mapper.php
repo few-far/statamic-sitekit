@@ -108,10 +108,13 @@ abstract class Mapper
     {
         $current = request()->uri()->path();
         
-        $url = $page->url();
-        
-        if (!$url) {
-            $url = $page->augmentedValue('url')->value()?->url();
+        $url = '';
+        if (\Composer\InstalledVersions::satisfies(new VersionParser, 'statamic/cms', '>=6.0')) {
+            $entry = $page->augmentedValue('page')->value();
+
+            $url = $entry?->uri() ?? $page->augmentedValue('url')->value();
+        } else {
+            $page->augmentedValue('url')->value()?->url();
         }
 
         $item = [

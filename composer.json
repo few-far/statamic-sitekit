@@ -5,8 +5,8 @@
   "version": "1.0.5",
   "require-dev": {
     "pestphp/pest": "^4.0 || ^5.0",
-    "larastan/larastan": "^3.12.1",
-    "orchestra/testbench": "^11.2.0"
+    "larastan/larastan": "^3.12.2",
+    "orchestra/testbench": "^11.3.0"
   },
   "require": {
     "chrome-php/chrome": "^1.16.1",
