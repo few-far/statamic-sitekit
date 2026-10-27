@@ -1,24 +1,26 @@
-export default {
-	extends: Vue.options.components['button_group-fieldtype'],
+document.addEventListener('alpine:init', function () {
+	Statamic.$components.register('cta-fieldtype', {
+		extends: Vue.options.components['button_group-fieldtype'],
 
-	render: null,
+		render: null,
 
-	template: `
-		<div class="button-group-fieldtype-wrapper">
-			<div class="btn-group">
-				<button class="btn px-2"
-					v-for="(option, $index) in options"
-					:key="$index"
-					ref="button"
-					type="button"
-					:name="name"
-					@click="updateSelectedOption(option.value)"
-					:value="option.value"
-					:disabled="isReadOnly"
-					:class="{ 'active': value === option.value }"
-					v-html="option.label || option.value"
-				/>
+		template: `
+			<div class="button-group-fieldtype-wrapper">
+				<div class="btn-group">
+					<button class="btn px-2"
+						v-for="(option, $index) in options"
+						:key="$index"
+						ref="button"
+						type="button"
+						:name="name"
+						@click="updateSelectedOption(option.value)"
+						:value="option.value"
+						:disabled="isReadOnly"
+						:class="{ 'active': value === option.value }"
+						v-html="option.label || option.value"
+					/>
+				</div>
 			</div>
-		</div>
-	`,
-};
+		`,
+	});
+});
