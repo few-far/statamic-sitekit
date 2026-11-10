@@ -3,6 +3,8 @@
 namespace FewFar\Sitekit\Forms\Fieldtypes;
 
 use Statamic\Fields\Fieldtype;
+use Illuminate\Support\Facades\File;
+use Statamic\Statamic;
 
 class FormSubmissionsLink extends Fieldtype
 {
@@ -28,28 +30,7 @@ class FormSubmissionsLink extends Fieldtype
     {
         parent::register();
 
-        $template = <<<'HTML'
-        HTML;
-
-        \Statamic\Statamic::inlineScript(<<<'JS'
-            document.addEventListener('cp:init', () => {
-                Statamic.$components.register('form_submissions_link-fieldtype', {
-                    mixins: [ window.Fieldtype ],
-
-                    template: `
-                        <a :href="meta.action" class="text-sm text-blue">View submissions</a>
-                    `
-
-                });
-
-                Statamic.$components.register('form_submissions_link-fieldtype-index', {
-                    mixins: [ window.IndexFieldtype ],
-
-                    template: `
-                        <a :href="value.action" class="btn btn-xs">View submissions</a>
-                    `,
-                });
-            });
-        JS);
+        Statamic::inlineScript(File::get(__DIR__.'/FormSubmissionLink.js'));
+        Statamic::inlineScript(File::get(__DIR__.'/FormSubmissionLinkIndex.js'));
     }
 }

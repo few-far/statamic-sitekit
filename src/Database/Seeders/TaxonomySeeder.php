@@ -18,6 +18,10 @@ class TaxonomySeeder extends Seeder
         $this->createTerms($this->fixtures());
     }
 
+    protected function configure(Taxonomy $taxonomy)
+    {
+    }
+
     protected function createTaxonomy()
     {
         $handle = $this->handle ?? (
@@ -27,7 +31,14 @@ class TaxonomySeeder extends Seeder
                 ->value()
         );
 
-        return tap(Facades\Taxonomy::make($handle))->save();
+        $taxonomy = Facades\Taxonomy::make($handle)->title(
+            str(class_basename($this))
+                ->before('Seeder')
+                ->title()
+                ->value()
+        );
+
+        return tap($this->configure($taxonomy) ?? $taxonomy)->save();
     }
 
     protected function createTerms($fixtures)
