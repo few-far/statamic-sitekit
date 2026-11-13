@@ -114,7 +114,7 @@ abstract class Mapper
 
             $url = $entry?->uri() ?? $page->augmentedValue('url')->value();
         } else {
-            $page->augmentedValue('url')->value()?->url();
+            $url = $page->augmentedValue('url')->value()?->url();
         }
 
         $item = [
