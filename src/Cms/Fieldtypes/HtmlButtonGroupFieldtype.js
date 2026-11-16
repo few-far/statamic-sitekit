@@ -1,5 +1,5 @@
 document.addEventListener('alpine:init', function () {
-	Statamic.$components.register('cta-fieldtype', {
+	Statamic.$components.register('html_button_group-fieldtype', {
 		extends: Vue.options.components['button_group-fieldtype'],
 
 		render: null,
