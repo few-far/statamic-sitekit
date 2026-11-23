@@ -2,11 +2,7 @@
   "name": "few-far/statamic-sitekit",
   "description": "We use Statamic, but we always bolt on these extra batteries + conventions so projects start at our baseline.",
   "type": "library",
-<<<<<<< HEAD
-  "version": "1.0.10",
-=======
   "version": "1.1.0",
->>>>>>> 20bc271 (Version 1.1.0)
   "require-dev": {
     "pestphp/pest": "^4.0 || ^5.0",
     "larastan/larastan": "^3.12.2",
