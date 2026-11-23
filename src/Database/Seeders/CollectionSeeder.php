@@ -87,17 +87,36 @@ class CollectionSeeder extends Seeder
     /**
      * Finds the seeder for the given fixture.
      */
-    public function seeder($entry, $fixture)
+    public function seeder($entry, $fixture, $parent = null)
     {
         if ($class = data_get($fixture, '@seeder')) {
             return app($class)->setEntry($entry);
         }
 
-        $class = implode('\\', [
+        // Standard: Collections\Pages\SandboxSeeder
+        $class = collect([
             $this->seederNamespace,
             str($this->collection->handle())->studly(),
+            str($parent?->uri() ?? '')->trim('/')->replace('/', '\\')->studly()->value(),
             str($entry->slug())->studly() . 'Seeder',
-        ]);
+        ])
+            ->filter()
+            ->implode('\\');
+
+        if (class_exists($class)) {
+            return app($class)->setEntry($entry);
+        }
+
+        // Nested: Collections\Pages\Sandbox\SandboxSeeder
+        $class = collect([
+            $this->seederNamespace,
+            str($this->collection->handle())->studly(),
+            str($parent?->uri() ?? '')->trim('/')->replace('/', '\\')->studly()->value(),
+            str($entry->slug())->studly(),
+            str($entry->slug())->studly() . 'Seeder',
+        ])
+            ->filter()
+            ->implode('\\');
 
         if (class_exists($class)) {
             return app($class)->setEntry($entry);
@@ -122,7 +141,7 @@ class CollectionSeeder extends Seeder
                 ->collection($this->collection)
                 ->data($this->data($fixture));
 
-            $seeder = $this->seeder($entry, $fixture);
+            $seeder = $this->seeder($entry, $fixture, $parent);
 
             $entry->blueprint($fixture['@blueprint'] ?? $seeder?->blueprint);
             $entry->save();
